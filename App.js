@@ -2,18 +2,24 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default class App extends React.Component {
-  test = "Good Morning";
-  componentWillMount(){
-    this.changeText();
+  state = {
+    data: []
+  };
+  test = [];
+  componentWillMount() {
+    this.fetchData();
   }
-  changeText = function() {
-    this.test = "Hi!";
-  }
+  fetchData = async () => {
+    //response = await fetch("https://reqres.in/api/users/2");
+    //json = await response.json();
+    this.test = ["data"];
+    text = this.text.toString();
+  };
   render() {
     return (
       <View style={styles.container}>
         <Text>
-          {this.test}
+          {this.text}
         </Text>
       </View>
     );
