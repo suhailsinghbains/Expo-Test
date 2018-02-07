@@ -1,43 +1,115 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React,{Component} from 'react';
+import { StyleSheet, ScrollView, ActivityIndicator, Text, View } from 'react-native';
 
 export default class App extends React.Component {
-  componentWillMount() {
-    this.fetchData();
+  state = {
+    loading: true,
+    error: false,
+    posts: [],
   }
-  fetchData = async () => {
-    // var test= fetch("https://reqres.in/api/users/2").then(function(response) {
-    //   return response.json().catch(function() {
-    //     return response.text();
-    //   });
-    // });
-    var test = {
-      "data": {
-        "id": 2,
-        "first_name": "Janet",
-        "last_name": "Weaver",
-        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-        }
-    };
-    //this.text = JSON.stringify(test).toString();
-    this.text = JSON.stringify(test["data"]["id"]).toString();
+
+  componentWillMount = async () => {
+    try {
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+      const posts = await response.json()
+
+      this.setState({loading: false, posts})
+    } catch (e) {
+      this.setState({loading: false, error: true})
+    }
   }
-  render() {
+
+  renderPost = ({id, title, body}, i) => {
     return (
-      <View style={styles.container}>
-        <Text>
-          {this.text}
-        </Text>
+      <View
+        key={id}
+        style={styles.post}
+      >
+        <View style={styles.postNumber}>
+          <Text>
+            {i + 1}
+          </Text>
+        </View>
+        <View style={styles.postContent}>
+          <Text>
+            {title}
+          </Text>
+          <Text style={styles.postBody}>
+            {body}
+          </Text>
+        </View>
       </View>
-    );
+    )
+  }
+
+  render() {
+    const {posts, loading, error} = this.state
+
+    if (loading) {
+      return (
+        <View style={styles.center}>
+          <ActivityIndicator animating={true} />
+        </View>
+      )
+    }
+
+    if (error) {
+      return (
+        <View style={styles.center}>
+          <Text>
+            Failed to load posts!
+          </Text>
+        </View>
+      )
+    }
+
+    return (
+      <ScrollView style={styles.container}>
+        {posts.map(this.renderPost)}
+      </ScrollView>
+    )
   }
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-});
+  post: {
+    flexDirection: 'row',
+  },
+  postNumber: {
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  postContent: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE',
+    paddingVertical: 25,
+    paddingRight: 15,
+  },
+  postBody: {
+    marginTop: 10,
+    fontSize: 12,
+    color: 'lightgray',
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    padding: 15,
+    backgroundColor: 'skyblue',
+  },
+})
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
