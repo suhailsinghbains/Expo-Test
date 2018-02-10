@@ -1,3 +1,3 @@
 # Expo-Test
   - Learning Expo
-  - Successfully calling API /*Programmatically changing text*/
+  - Successfully calling custom API /*Programmatically changing text*/
