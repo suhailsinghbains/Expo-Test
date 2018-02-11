@@ -3,41 +3,37 @@ import { StyleSheet, ScrollView, ActivityIndicator, Text, View } from 'react-nat
 
 export default class App extends React.Component {
   state = {
-   loading: true,
-   error: false,
-   data: [],
- }
+    data : []
+  };
  componentWillMount = async () => {
-   try {
-     const response = await fetch('https://reqres.in/api/users?page=2')
-     const data = await response.json()
-     this.setState({loading: false, data})
-   } catch (e) {
-     this.setState({loading: false, error: true})
-   }
+   // let url = "http://192.168.0.103:3000/";
+   let url = "https://reqres.in/api/users/2";
+   let body = null;
+    let headers = {
+      'Content-Type': 'application/json',
+    };
+    fetch(url, {
+      method: "GET",
+      headers: headers,
+      body: null
+    })
+    .then((response) =>{
+      //const Test1 = response.json()
+      // this.setState(JSON.stringify(response))
+    })
+    .then((data) => {
+      // this.setState(data.json())
+      this.setState(data.toString())
+    })
+    .catch((error) => {
+      // this.setState(error)
+    });
  }
  render() {
-   const {data, loading, error} = this.state
-   if (loading) {
-     return (
-       <View style={styles.center}>
-         <ActivityIndicator animating={true} />
-       </View>
-     )
-   }
-   if (error) {
-     return (
-       <View style={styles.center}>
-         <Text>
-           Failed to load posts!
-         </Text>
-       </View>
-     )
-   }
    return (
      <View style={styles.center}>
        <Text>
-         {JSON.stringify(data["data"][0]["first_name"])}
+         {JSON.stringify(this.state)}
        </Text>
      </View>
    )
