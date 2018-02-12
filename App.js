@@ -6,28 +6,15 @@ export default class App extends React.Component {
     data : []
   };
  componentWillMount = async () => {
-   // let url = "http://192.168.0.103:3000/";
-   let url = "https://reqres.in/api/users/2";
-   let body = null;
-    let headers = {
-      'Content-Type': 'application/json',
-    };
-    fetch(url, {
-      method: "GET",
-      headers: headers,
-      body: null
-    })
-    .then((response) =>{
-      //const Test1 = response.json()
-      // this.setState(JSON.stringify(response))
-    })
-    .then((data) => {
-      // this.setState(data.json())
-      this.setState(data.toString())
-    })
-    .catch((error) => {
-      // this.setState(error)
-    });
+   try {
+     const response = await fetch('http://192.168.0.102:8080/')
+     const data = await response.json()
+     this.setState(data)
+   } catch (e) {
+
+   } finally {
+
+   }
  }
  render() {
    return (
