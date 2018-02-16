@@ -7,13 +7,17 @@ export default class App extends React.Component {
   };
  componentWillMount = async () => {
    try {
-     const response = await fetch('http://192.168.0.102:8080/',{
+     const response = await fetch('https://reqres.in/api/users', {
        method: 'POST',
        headers: {
          Accept: 'application/json',
          'Content-Type': 'application/json',
-       }
-     })
+       },
+       body: JSON.stringify({
+         name: 'morpheus',
+         job: 'leader',
+       }),
+     });
      const data = await response.json()
      this.setState(data)
    } catch (e) {
